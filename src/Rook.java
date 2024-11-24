@@ -10,30 +10,30 @@ public class Rook extends ChessPiece {
     }
 
     @Override
-    public boolean canMoveToPosition(ChessBoard chessBoard, int line, int column, int toLine, int toColumn) {
-        if (chessBoard.checkPos(toLine) || chessBoard.checkPos(toColumn)) return false;
+    protected boolean canMoveSpecific(ChessBoard chessBoard, int line, int column, int toLine, int toColumn) {
+        if (!chessBoard.checkPos(toLine) || !chessBoard.checkPos(toColumn)) return false;
 
         if (line == toLine && column == toColumn) return false;
 
         if (line != toLine && column != toColumn) return false;
 
-        if (line == toLine) {
-            int step = (toColumn > column) ? 1 : -1;
-            for (int i = column + step; i != toColumn; i += step) {
-                if (chessBoard.board[line][i] != null) {
-                    return false;
-                }
+        int rowOffset = Integer.compare(toLine, line);
+        int colOffset = Integer.compare(toColumn, column);
+
+
+        int row = line + rowOffset;
+        int col = column + colOffset;
+        while (row != toLine || col != toColumn) {
+
+            if (chessBoard.board[row][col] != null) {
+                return false;
             }
-        } else {
-            int step = (toLine > line) ? 1 : -1;
-            for (int i = line + step; i != toLine; i += step) {
-                if (chessBoard.board[i][column] != null) {
-                    return false;
-                }
-            }
+            row += rowOffset;
+            col += colOffset;
         }
 
         return chessBoard.board[toLine][toColumn] == null || !chessBoard.board[toLine][toColumn].getColor().equals(this.color);
+
     }
 
     @Override

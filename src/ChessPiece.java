@@ -11,20 +11,10 @@ public abstract class ChessPiece {
     }
 
     public boolean canMoveToPosition(ChessBoard chessBoard, int line, int column, int toLine, int toColumn) {
-        if (chessBoard.checkPos(toLine) || chessBoard.checkPos(toColumn) || (line == toLine && column == toColumn)) {
-            return false;
-        }
-        ChessPiece targetPiece = chessBoard.board[toLine][toColumn];
-        if (targetPiece != null && targetPiece.getColor().equals(this.color)) {
-            return false;
-        }
-
         return canMoveSpecific(chessBoard, line, column, toLine, toColumn);
     }
 
-    protected boolean canMoveSpecific(ChessBoard chessBoard, int line, int column, int toLine, int toColumn) {
-        return true;
-    }
+    protected abstract boolean canMoveSpecific(ChessBoard chessBoard, int line, int column, int toLine, int toColumn);
 
     public abstract String getSymbol();
 }
